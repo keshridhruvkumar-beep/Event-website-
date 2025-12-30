@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Event</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+}
+
+header{
+  background:#111;
+  color:white;
+  padding:20px 40px;
+}
+
+section{
+  max-width:600px;
+  background:white;
+  margin:40px auto;
+  padding:25px;
+  border-radius:10px;
+}
+
+input, select, textarea, button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+}
+
+button{
+  background:#ff5a5f;
+  color:white;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Add College Event</h2>
+</header>
+
+<section>
+  <input id="eventName" placeholder="Event Name">
+  <input id="eventDate" type="date">
+  <input id="eventTime" type="time">
+
+  <select id="eventCategory">
+    <option value="">Select Category</option>
+    <option>Technical</option>
+    <option>Cultural</option>
+  </select>
+
+  <textarea id="eventDesc" placeholder="Event Description"></textarea>
+
+  <button onclick="addEvent()">Add Event</button>
+</section>
+
+<script>
+let events = JSON.parse(localStorage.getItem("events")) || []
+
+function addEvent(){
+  let e={
+    name:eventName.value,
+    date:eventDate.value,
+    time:eventTime.value,
+    category:eventCategory.value,
+    desc:eventDesc.value
+  }
+
+  if(!e.name || !e.date || !e.time || !e.category) return
+
+  events.push(e)
+  localStorage.setItem("events", JSON.stringify(events))
+
+  window.location.href="index.html"
+}
+</script>
+
+</body>
+</html>

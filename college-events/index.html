@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>College Events | Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+}
+
+header{
+  background:#111;
+  color:white;
+  padding:20px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header a, header button{
+  color:white;
+  background:none;
+  border:none;
+  text-decoration:none;
+  font-size:16px;
+  cursor:pointer;
+  margin-left:20px;
+}
+
+.main{
+  display:flex;
+  padding:30px 40px;
+  gap:20px;
+}
+
+.nearest{
+  flex:3;
+  background:white;
+  padding:25px;
+  border-radius:10px;
+}
+
+.upcoming{
+  flex:1;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  max-height:80vh;
+  overflow-y:auto;
+}
+
+.event-card{
+  border-bottom:1px solid #ddd;
+  padding-bottom:10px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>College Events</h2>
+  <div>
+    <button onclick="goToAdd()">Add Event</button>
+  </div>
+</header>
+
+<div class="main">
+  <div class="nearest" id="nearestEvent"></div>
+  <div class="upcoming">
+    <h3>Upcoming Events</h3>
+    <div id="upcomingList"></div>
+  </div>
+</div>
+
+<script>
+function goToAdd(){
+  window.location.href = "add-event.html"
+}
+
+let events = JSON.parse(localStorage.getItem("events")) || []
+
+let today = new Date()
+events = events.filter(e => new Date(e.date) >= today)
+events.sort((a,b)=> new Date(a.date)-new Date(b.date))
+
+let nearest = document.getElementById("nearestEvent")
+let upcoming = document.getElementById("upcomingList")
+
+if(events.length === 0){
+  nearest.innerHTML = "<p>No upcoming events</p>"
+}else{
+  let e = events[0]
+  nearest.innerHTML = `
+    <h2>${e.name}</h2>
+    <p><b>Date:</b> ${e.date}</p>
+    <p><b>Time:</b> ${e.time}</p>
+    <p><b>Category:</b> ${e.category}</p>
+    <p>${e.desc}</p>
+  `
+
+  events.slice(1).forEach(ev=>{
+    let div = document.createElement("div")
+    div.className="event-card"
+    div.innerHTML=`
+      <b>${ev.name}</b><br>
+      ${ev.date} | ${ev.category}
+    `
+    upcoming.appendChild(div)
+  })
+}
+</script>
+
+</body>
+</html>
