@@ -107,13 +107,21 @@ if(events.length === 0){
   events.slice(1).forEach(ev=>{
     let div = document.createElement("div")
     div.className="event-card"
-    div.innerHTML=`
-      <b>${ev.name}</b><br>
-      ${ev.date} | ${ev.category}
+    div.innerHTML = `
+  <b>${ev.name}</b><br>
+  ${ev.date} | ${ev.category}<br>
+  <button onclick="deleteEvent(${i})">Delete</button>
     `
     upcoming.appendChild(div)
   })
 }
+  function deleteEvent(index){
+  let events = JSON.parse(localStorage.getItem("events")) || []
+  events.splice(index,1)
+  localStorage.setItem("events", JSON.stringify(events))
+  location.reload()
+}
+
 </script>
 
 </body>
